@@ -2,7 +2,6 @@
 
 A comprehensive web application for managing blood donations, requests, and donors. This system connects blood donors with people in need, streamlines the blood donation process, and helps save lives.
 
-![Blood Bank System](BloodBankSystem\BloodBankSystem\BloodBankSystem\static\img\homepage.png)
 
 ## ✨ Key Features
 
@@ -35,6 +34,18 @@ A comprehensive web application for managing blood donations, requests, and dono
   - Works on Windows, macOS, and Linux
   - Responsive design for mobile and desktop
   - Environment-agnostic configuration
+## ss of the web-app 
+![image](https://github.com/user-attachments/assets/820872c8-342c-4eff-ab09-7cdfcd804ddc)
+![image](https://github.com/user-attachments/assets/008efef4-e294-4925-b11e-f8947fd0b72c)
+![image](https://github.com/user-attachments/assets/6d013051-68be-45b1-889a-6e7bc780f83b)
+![image](https://github.com/user-attachments/assets/b4af5f5e-1b4f-42e9-bc2a-e7d1a923ed96)
+![image](https://github.com/user-attachments/assets/7c26aa0c-a7a1-4239-8e7d-151639a24915)
+![image](https://github.com/user-attachments/assets/345b781f-c4bf-4289-bd57-763463b4b702)
+![image](https://github.com/user-attachments/assets/2fe9f1be-a4b0-4f91-9ff3-51e0a16f49c6)
+![image](https://github.com/user-attachments/assets/567e34b0-bde7-4861-8bed-a450709da22e)
+![image](https://github.com/user-attachments/assets/26259818-d57a-4a73-a1d3-2ee6c82c508f)
+![image](https://github.com/user-attachments/assets/5bb035a9-9e17-4931-a8d4-72d99382b04f)
+![image](https://github.com/user-attachments/assets/98374f9a-f191-41f0-b8b8-3e0942d60691)
 
 ## 🛠️ Technology Stack
 
