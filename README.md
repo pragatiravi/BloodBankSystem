@@ -2,7 +2,7 @@
 
 A comprehensive web application for managing blood donations, requests, and donors. This system connects blood donors with people in need, streamlines the blood donation process, and helps save lives.
 
-![Blood Bank System](BloodBankSystem/BloodBankSystem/static/img/blood-bank-banner.png)
+![Blood Bank System](BloodBankSystem\BloodBankSystem\BloodBankSystem\static\img\homepage.png)
 
 ## ✨ Key Features
 
