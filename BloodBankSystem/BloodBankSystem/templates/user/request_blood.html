@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Request Blood | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="fas fa-tint me-2"></i>Request Blood</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info mb-4">
+            <p class="mb-0">
+                <i class="fas fa-info-circle me-2"></i>
+                Fill out this form to request blood. Our team will process your request and connect you with suitable donors as soon as possible.
+            </p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="mb-3">Requester Information</h5>
+                    
+                    <div class="mb-3">
+                        <label for="id_requester_name" class="form-label">Your Full Name</label>
+                        <input type="text" name="requester_name" id="id_requester_name" class="form-control" required value="{% if user.is_authenticated %}{{ user.get_full_name }}{% endif %}">
+                        {% if form.requester_name.errors %}
+                            <div class="text-danger">
+                                {% for error in form.requester_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_requester_email" class="form-label">Your Email</label>
+                        <input type="email" name="requester_email" id="id_requester_email" class="form-control" required value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
+                        {% if form.requester_email.errors %}
+                            <div class="text-danger">
+                                {% for error in form.requester_email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_requester_phone" class="form-label">Your Phone Number</label>
+                        <input type="text" name="requester_phone" id="id_requester_phone" class="form-control" required>
+                        {% if form.requester_phone.errors %}
+                            <div class="text-danger">
+                                {% for error in form.requester_phone.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <h5 class="mb-3 mt-4">Patient Information</h5>
+                    
+                    <div class="mb-3">
+                        <label for="id_patient_name" class="form-label">Patient Name</label>
+                        <input type="text" name="patient_name" id="id_patient_name" class="form-control" required>
+                        {% if form.patient_name.errors %}
+                            <div class="text-danger">
+                                {% for error in form.patient_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_patient_age" class="form-label">Patient Age</label>
+                                <input type="number" name="patient_age" id="id_patient_age" class="form-control" min="0" required>
+                                {% if form.patient_age.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.patient_age.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_patient_gender" class="form-label">Patient Gender</label>
+                                <select name="patient_gender" id="id_patient_gender" class="form-select" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                {% if form.patient_gender.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.patient_gender.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5 class="mb-3">Blood Requirement</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_blood_group" class="form-label">Blood Group Required</label>
+                                <select name="blood_group" id="id_blood_group" class="form-select" required>
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                                {% if form.blood_group.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.blood_group.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_units_required" class="form-label">Units Required</label>
+                                <input type="number" name="units_required" id="id_units_required" class="form-control" min="1" value="1" required>
+                                {% if form.units_required.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.units_required.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_hospital_name" class="form-label">Hospital Name</label>
+                        <input type="text" name="hospital_name" id="id_hospital_name" class="form-control" required>
+                        {% if form.hospital_name.errors %}
+                            <div class="text-danger">
+                                {% for error in form.hospital_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_hospital_address" class="form-label">Hospital Address</label>
+                        <textarea name="hospital_address" id="id_hospital_address" class="form-control" rows="2" required></textarea>
+                        {% if form.hospital_address.errors %}
+                            <div class="text-danger">
+                                {% for error in form.hospital_address.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_city" class="form-label">City</label>
+                                <input type="text" name="city" id="id_city" class="form-control" required>
+                                {% if form.city.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.city.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_state" class="form-label">State</label>
+                                <input type="text" name="state" id="id_state" class="form-control" required>
+                                {% if form.state.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.state.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_needed_by_date" class="form-label">Needed By Date</label>
+                        <input type="date" name="needed_by_date" id="id_needed_by_date" class="form-control" required>
+                        {% if form.needed_by_date.errors %}
+                            <div class="text-danger">
+                                {% for error in form.needed_by_date.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_reason" class="form-label">Reason for Blood Request</label>
+                        <textarea name="reason" id="id_reason" class="form-control" rows="3" required></textarea>
+                        {% if form.reason.errors %}
+                            <div class="text-danger">
+                                {% for error in form.reason.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-danger btn-lg">Submit Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

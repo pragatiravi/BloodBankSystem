@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | {{ block.super }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="jumbotron bg-danger text-white rounded p-5 mb-4">
+    <div class="container text-center">
+        <h1 class="display-4"><i class="fas fa-heartbeat me-2"></i>Blood Bank System</h1>
+        <p class="lead">Donate blood, save lives. Be a hero in someone's life.</p>
+        <hr class="my-4 bg-light">
+        <p>Every drop counts. Register as a donor today and help save lives.</p>
+        <a class="btn btn-light btn-lg me-2" href="{% url 'donor_register' %}" role="button">Register as Donor</a>
+        <a class="btn btn-outline-light btn-lg" href="{% url 'request_blood' %}" role="button">Request Blood</a>
+    </div>
+</div>
+
+<!-- Quick Access Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Quick Access</h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'admin_login' %}" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="fas fa-user-shield me-2"></i>Admin Login
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'login' %}" class="btn btn-outline-success btn-lg w-100">
+                            <i class="fas fa-user me-2"></i>User Login
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'donor_register' %}" class="btn btn-outline-danger btn-lg w-100">
+                            <i class="fas fa-user-plus me-2"></i>Donor Register
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'request_blood' %}" class="btn btn-outline-warning btn-lg w-100">
+                            <i class="fas fa-tint me-2"></i>Request Blood
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Features Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">New Features</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-primary">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Real-time Notifications</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Get instant notifications for:</p>
+                                <ul>
+                                    <li>New blood requests</li>
+                                    <li>Donor availability updates</li>
+                                    <li>Request fulfillment status</li>
+                                </ul>
+                                <p class="text-muted small">Login to access your notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-success">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Dashboard</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Enhanced admin features:</p>
+                                <ul>
+                                    <li>Manage blood requests</li>
+                                    <li>Monitor donor availability</li>
+                                    <li>Generate reports</li>
+                                    <li>Respond to contact queries</li>
+                                </ul>
+                                <a href="{% url 'admin_login' %}" class="btn btn-sm btn-success">Admin Login</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-danger">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0"><i class="fas fa-toggle-on me-2"></i>Donor Availability</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Donors can now:</p>
+                                <ul>
+                                    <li>Toggle availability status</li>
+                                    <li>Receive matching blood requests</li>
+                                    <li>Get notified of urgent needs</li>
+                                    <li>Track donation history</li>
+                                </ul>
+                                <a href="{% url 'donor_register' %}" class="btn btn-sm btn-danger">Register as Donor</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-user-plus text-danger fa-3x mb-3"></i>
+                <h5 class="card-title">Become a Donor</h5>
+                <p class="card-text">Register as a blood donor and help save lives in your community.</p>
+                <a href="{% url 'donor_register' %}" class="btn btn-outline-danger">Register Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-search text-danger fa-3x mb-3"></i>
+                <h5 class="card-title">Find a Donor</h5>
+                <p class="card-text">Search for blood donors in your area based on blood group.</p>
+                <a href="{% url 'search_donor' %}" class="btn btn-outline-danger">Search Donors</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-tint text-danger fa-3x mb-3"></i>
+                <h5 class="card-title">Request Blood</h5>
+                <p class="card-text">Need blood? Submit a request and we'll help find donors for you.</p>
+                <a href="{% url 'request_blood' %}" class="btn btn-outline-danger">Request Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blood Types Information -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0">Blood Groups and Compatibility</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead class="table-danger">
+                        <tr>
+                            <th>Blood Type</th>
+                            <th>Can Give To</th>
+                            <th>Can Receive From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"><strong>A+</strong></td>
+                            <td>A+, AB+</td>
+                            <td>A+, A-, O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>A-</strong></td>
+                            <td>A+, A-, AB+, AB-</td>
+                            <td>A-, O-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>B+</strong></td>
+                            <td>B+, AB+</td>
+                            <td>B+, B-, O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>B-</strong></td>
+                            <td>B+, B-, AB+, AB-</td>
+                            <td>B-, O-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead class="table-danger">
+                        <tr>
+                            <th>Blood Type</th>
+                            <th>Can Give To</th>
+                            <th>Can Receive From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"><strong>AB+</strong></td>
+                            <td>AB+ only</td>
+                            <td>All Blood Types</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>AB-</strong></td>
+                            <td>AB+, AB-</td>
+                            <td>A-, B-, AB-, O-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>O+</strong></td>
+                            <td>All Positive Types</td>
+                            <td>O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>O-</strong></td>
+                            <td>All Blood Types</td>
+                            <td>O- only</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Benefits Section -->
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0">Benefits of Blood Donation</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Reduces risk of heart diseases</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Burns calories</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Reduces risk of cancer</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Improves emotional well-being</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Free health checkup</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Reduces iron overload</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Helps in blood flow improvement</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Saves lives!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

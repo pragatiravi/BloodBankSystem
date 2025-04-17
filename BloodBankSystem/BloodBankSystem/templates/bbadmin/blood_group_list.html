@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blood Groups | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_group_list' %}" class="text-decoration-none">
+                            <i class="fas fa-tint me-2 text-danger"></i>Blood Groups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_donor_list' %}" class="text-decoration-none">
+                            <i class="fas fa-users me-2 text-danger"></i>Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Blood Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact_query_list' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Queries
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_report' %}" class="text-decoration-none">
+                            <i class="fas fa-chart-bar me-2 text-danger"></i>Reports
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-tint me-2"></i>Blood Groups</h4>
+                <a href="{% url 'blood_group_add' %}" class="btn btn-light btn-sm">
+                    <i class="fas fa-plus me-1"></i>Add Blood Group
+                </a>
+            </div>
+            <div class="card-body">
+                {% if blood_groups %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Blood Group</th>
+                                    <th>Description</th>
+                                    <th>Available Units</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for group in blood_groups %}
+                                    <tr>
+                                        <td><span class="badge bg-danger">{{ group.name }}</span></td>
+                                        <td>{{ group.description|truncatechars:50 }}</td>
+                                        <td>{{ group.total_units }}</td>
+                                        <td>{{ group.last_updated|date:"d M, Y" }}</td>
+                                        <td>
+                                            <a href="{% url 'blood_group_update' group.id %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'blood_group_delete' group.id %}" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p class="mb-0">No blood groups added yet. Click the "Add Blood Group" button to add one.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

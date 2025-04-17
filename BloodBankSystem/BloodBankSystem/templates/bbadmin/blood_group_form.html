@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_group_list' %}" class="text-decoration-none">
+                            <i class="fas fa-tint me-2 text-danger"></i>Blood Groups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_donor_list' %}" class="text-decoration-none">
+                            <i class="fas fa-users me-2 text-danger"></i>Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Blood Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact_query_list' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Queries
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_report' %}" class="text-decoration-none">
+                            <i class="fas fa-chart-bar me-2 text-danger"></i>Reports
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    {% if form.instance.pk %}
+                        <i class="fas fa-edit me-2"></i>Update Blood Group
+                    {% else %}
+                        <i class="fas fa-plus me-2"></i>Add Blood Group
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label">Blood Group Name</label>
+                        <input type="text" name="name" id="id_name" class="form-control" value="{{ form.instance.name|default:'' }}" required>
+                        {% if form.name.errors %}
+                            <div class="text-danger">
+                                {% for error in form.name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">Examples: A+, B-, AB+, O-</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description</label>
+                        <textarea name="description" id="id_description" class="form-control" rows="3">{{ form.instance.description|default:'' }}</textarea>
+                        {% if form.description.errors %}
+                            <div class="text-danger">
+                                {% for error in form.description.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_total_units" class="form-label">Total Units Available</label>
+                        <input type="number" name="total_units" id="id_total_units" class="form-control" min="0" value="{{ form.instance.total_units|default:0 }}" required>
+                        {% if form.total_units.errors %}
+                            <div class="text-danger">
+                                {% for error in form.total_units.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'blood_group_list' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-danger">
+                            {% if form.instance.pk %}
+                                Update
+                            {% else %}
+                                Add
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

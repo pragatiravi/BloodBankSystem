@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blood Request Details | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="fas fa-tint me-2"></i>Blood Request Details</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="mb-3 border-bottom pb-2">Request Information</h5>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th width="40%">Request ID</th>
+                            <td>{{ blood_request.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Request Date</th>
+                            <td>{{ blood_request.request_date|date:"F d, Y H:i" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Blood Group</th>
+                            <td><span class="badge bg-danger">{{ blood_request.blood_group }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Units Required</th>
+                            <td>{{ blood_request.units_required }}</td>
+                        </tr>
+                        <tr>
+                            <th>Needed By</th>
+                            <td>{{ blood_request.needed_by_date|date:"F d, Y" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                {% if blood_request.status == 'Pending' %}
+                                    <span class="badge bg-warning">{{ blood_request.status }}</span>
+                                {% elif blood_request.status == 'Approved' %}
+                                    <span class="badge bg-success">{{ blood_request.status }}</span>
+                                {% elif blood_request.status == 'Rejected' %}
+                                    <span class="badge bg-danger">{{ blood_request.status }}</span>
+                                {% else %}
+                                    <span class="badge bg-info">{{ blood_request.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Reason</th>
+                            <td>{{ blood_request.reason }}</td>
+                        </tr>
+                        {% if blood_request.remarks %}
+                        <tr>
+                            <th>Admin Remarks</th>
+                            <td>{{ blood_request.remarks }}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="col-md-6">
+                <h5 class="mb-3 border-bottom pb-2">Patient & Hospital Information</h5>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th width="40%">Patient Name</th>
+                            <td>{{ blood_request.patient_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Patient Age</th>
+                            <td>{{ blood_request.patient_age }} years</td>
+                        </tr>
+                        <tr>
+                            <th>Patient Gender</th>
+                            <td>{{ blood_request.patient_gender }}</td>
+                        </tr>
+                        <tr>
+                            <th>Hospital Name</th>
+                            <td>{{ blood_request.hospital_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Hospital Address</th>
+                            <td>{{ blood_request.hospital_address }}</td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <td>{{ blood_request.city }}</td>
+                        </tr>
+                        <tr>
+                            <th>State</th>
+                            <td>{{ blood_request.state }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        {% if blood_request.status == 'Approved' %}
+            <div class="alert alert-success mt-3">
+                <h5><i class="fas fa-check-circle me-2"></i>Your blood request has been approved!</h5>
+                <p>Our team will contact you shortly to coordinate the blood donation.</p>
+            </div>
+        {% elif blood_request.status == 'Rejected' %}
+            <div class="alert alert-danger mt-3">
+                <h5><i class="fas fa-times-circle me-2"></i>Your blood request has been rejected.</h5>
+                <p>Please check the admin remarks for more information. You may submit a new request if needed.</p>
+            </div>
+        {% elif blood_request.status == 'Completed' %}
+            <div class="alert alert-info mt-3">
+                <h5><i class="fas fa-check-circle me-2"></i>Your blood request has been completed.</h5>
+                <p>Thank you for using our service.</p>
+            </div>
+        {% else %}
+            <div class="alert alert-warning mt-3">
+                <h5><i class="fas fa-hourglass-half me-2"></i>Your blood request is pending approval.</h5>
+                <p>Our team will review your request as soon as possible. You will be notified when the status changes.</p>
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'my_blood_requests' %}" class="btn btn-outline-danger">
+            <i class="fas fa-arrow-left me-2"></i>Back to My Requests
+        </a>
+        
+        {% if blood_request.status == 'Pending' or blood_request.status == 'Rejected' %}
+            <a href="{% url 'request_blood' %}" class="btn btn-danger ms-2">
+                <i class="fas fa-plus me-2"></i>New Request
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

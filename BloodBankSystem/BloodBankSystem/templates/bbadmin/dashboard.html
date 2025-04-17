@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_group_list' %}" class="text-decoration-none">
+                            <i class="fas fa-tint me-2 text-danger"></i>Blood Groups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_donor_list' %}" class="text-decoration-none">
+                            <i class="fas fa-users me-2 text-danger"></i>Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Blood Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact_query_list' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Queries
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_report' %}" class="text-decoration-none">
+                            <i class="fas fa-chart-bar me-2 text-danger"></i>Reports
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card bg-primary text-white shadow text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-tint fa-3x mb-3"></i>
+                        <h5>Blood Groups</h5>
+                        <h2>{{ total_blood_groups }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card bg-success text-white shadow text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x mb-3"></i>
+                        <h5>Donors</h5>
+                        <h2>{{ total_donors }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card bg-warning text-white shadow text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-ambulance fa-3x mb-3"></i>
+                        <h5>Blood Requests</h5>
+                        <h2>{{ total_blood_requests }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card bg-info text-white shadow text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-3x mb-3"></i>
+                        <h5>Contact Queries</h5>
+                        <h2>{{ total_contact_queries }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="fas fa-tint me-2"></i>Blood Group Inventory</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if blood_groups %}
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Blood Group</th>
+                                        <th>Available Units</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for group in blood_groups %}
+                                        <tr>
+                                            <td>{{ group.name }}</td>
+                                            <td>{{ group.total_units }}</td>
+                                            <td>{{ group.last_updated|date:"d M, Y" }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="text-center mt-3">
+                                <a href="{% url 'blood_group_list' %}" class="btn btn-sm btn-outline-danger">Manage Blood Groups</a>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">No blood groups added yet.</p>
+                            </div>
+                            <div class="text-center">
+                                <a href="{% url 'blood_group_add' %}" class="btn btn-danger">Add Blood Group</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="fas fa-ambulance me-2"></i>Recent Blood Requests</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_requests %}
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Blood Group</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for request in recent_requests %}
+                                        <tr>
+                                            <td>{{ request.patient_name }}</td>
+                                            <td><span class="badge bg-danger">{{ request.blood_group }}</span></td>
+                                            <td>{{ request.request_date|date:"d M, Y" }}</td>
+                                            <td>
+                                                {% if request.status == 'Pending' %}
+                                                    <span class="badge bg-warning">{{ request.status }}</span>
+                                                {% elif request.status == 'Approved' %}
+                                                    <span class="badge bg-success">{{ request.status }}</span>
+                                                {% elif request.status == 'Rejected' %}
+                                                    <span class="badge bg-danger">{{ request.status }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-info">{{ request.status }}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="text-center mt-3">
+                                <a href="{% url 'admin_blood_request_list' %}" class="btn btn-sm btn-outline-danger">View All Requests</a>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">No blood requests received yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-envelope me-2"></i>Recent Contact Queries</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_queries %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for query in recent_queries %}
+                                <tr>
+                                    <td>{{ query.name }}</td>
+                                    <td>{{ query.subject }}</td>
+                                    <td>{{ query.date_sent|date:"d M, Y" }}</td>
+                                    <td>
+                                        {% if query.is_read %}
+                                            <span class="badge bg-success">Read</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Unread</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'contact_query_detail' query.id %}" class="btn btn-sm btn-outline-danger">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'contact_query_list' %}" class="btn btn-sm btn-outline-danger">View All Queries</a>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p class="mb-0">No contact queries received yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

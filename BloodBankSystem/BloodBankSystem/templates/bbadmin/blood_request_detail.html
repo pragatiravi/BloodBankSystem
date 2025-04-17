@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blood Request Detail | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_group_list' %}" class="text-decoration-none">
+                            <i class="fas fa-tint me-2 text-danger"></i>Blood Groups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_donor_list' %}" class="text-decoration-none">
+                            <i class="fas fa-users me-2 text-danger"></i>Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Blood Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact_query_list' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Queries
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_report' %}" class="text-decoration-none">
+                            <i class="fas fa-chart-bar me-2 text-danger"></i>Reports
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-ambulance me-2"></i>Blood Request Detail</h4>
+                <a href="{% url 'admin_blood_request_delete' blood_request.id %}" class="btn btn-light btn-sm">
+                    <i class="fas fa-trash me-1"></i>Delete Request
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="mb-3 border-bottom pb-2">Requester Information</h5>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th width="40%">Requester Name</th>
+                                    <td>{{ blood_request.requester_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ blood_request.requester_email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone Number</th>
+                                    <td>{{ blood_request.requester_phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Request Date</th>
+                                    <td>{{ blood_request.request_date|date:"F d, Y H:i" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Needed By</th>
+                                    <td>{{ blood_request.needed_by_date|date:"F d, Y" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h5 class="mb-3 mt-4 border-bottom pb-2">Patient Information</h5>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th width="40%">Patient Name</th>
+                                    <td>{{ blood_request.patient_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Age</th>
+                                    <td>{{ blood_request.patient_age }} years</td>
+                                </tr>
+                                <tr>
+                                    <th>Gender</th>
+                                    <td>{{ blood_request.patient_gender }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Blood Group</th>
+                                    <td><span class="badge bg-danger">{{ blood_request.blood_group }}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Units Required</th>
+                                    <td>{{ blood_request.units_required }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h5 class="mb-3 border-bottom pb-2">Hospital Information</h5>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th width="40%">Hospital Name</th>
+                                    <td>{{ blood_request.hospital_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Hospital Address</th>
+                                    <td>{{ blood_request.hospital_address }}</td>
+                                </tr>
+                                <tr>
+                                    <th>City</th>
+                                    <td>{{ blood_request.city }}</td>
+                                </tr>
+                                <tr>
+                                    <th>State</th>
+                                    <td>{{ blood_request.state }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h5 class="mb-3 mt-4 border-bottom pb-2">Request Status</h5>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th width="40%">Status</th>
+                                    <td>
+                                        {% if blood_request.status == 'Pending' %}
+                                            <span class="badge bg-warning">{{ blood_request.status }}</span>
+                                        {% elif blood_request.status == 'Approved' %}
+                                            <span class="badge bg-success">{{ blood_request.status }}</span>
+                                        {% elif blood_request.status == 'Rejected' %}
+                                            <span class="badge bg-danger">{{ blood_request.status }}</span>
+                                        {% else %}
+                                            <span class="badge bg-info">{{ blood_request.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% if blood_request.attended_by %}
+                                <tr>
+                                    <th>Attended By</th>
+                                    <td>{{ blood_request.attended_by.get_full_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Attended Date</th>
+                                    <td>{{ blood_request.attended_date|date:"F d, Y H:i" }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if blood_request.remarks %}
+                                <tr>
+                                    <th>Remarks</th>
+                                    <td>{{ blood_request.remarks }}</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card mt-3 mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Reason for Request</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ blood_request.reason|linebreaks }}</p>
+                    </div>
+                </div>
+                
+                <h5 class="mb-3"><i class="fas fa-edit me-2"></i>Update Request Status</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_status" class="form-label">Status</label>
+                                <select name="status" id="id_status" class="form-select" required>
+                                    <option value="Pending" {% if blood_request.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                    <option value="Approved" {% if blood_request.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                    <option value="Rejected" {% if blood_request.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                    <option value="Completed" {% if blood_request.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                </select>
+                                {% if form.status.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.status.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_remarks" class="form-label">Remarks</label>
+                                <textarea name="remarks" id="id_remarks" class="form-control" rows="3">{{ blood_request.remarks }}</textarea>
+                                {% if form.remarks.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.remarks.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Update Request</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'admin_blood_request_list' %}" class="btn btn-outline-danger">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Requests
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

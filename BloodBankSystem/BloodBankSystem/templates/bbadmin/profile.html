@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Profile | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_group_list' %}" class="text-decoration-none">
+                            <i class="fas fa-tint me-2 text-danger"></i>Blood Groups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_donor_list' %}" class="text-decoration-none">
+                            <i class="fas fa-users me-2 text-danger"></i>Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Blood Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact_query_list' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Queries
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_report' %}" class="text-decoration-none">
+                            <i class="fas fa-chart-bar me-2 text-danger"></i>Reports
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit Admin Profile</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            {% if admin.profile_pic %}
+                                <img src="{{ admin.profile_pic.url }}" alt="{{ admin.user.get_full_name }}" class="img-fluid rounded-circle mb-3" style="max-width: 150px; max-height: 150px;">
+                            {% else %}
+                                <img src="{% static 'images/default-profile.png' %}" alt="Default Profile" class="img-fluid rounded-circle mb-3" style="max-width: 150px; max-height: 150px;" onerror="this.src='https://via.placeholder.com/150?text=Admin'">
+                            {% endif %}
+                            
+                            <div class="mb-3">
+                                <label for="id_profile_pic" class="form-label">Profile Picture</label>
+                                <input type="file" name="profile_pic" id="id_profile_pic" class="form-control">
+                                {% if form.profile_pic.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.profile_pic.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <h5 class="mb-3 border-bottom pb-2">Account Information</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" value="{{ admin.user.username }}" readonly>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="text" class="form-control" value="{{ admin.user.email }}" readonly>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" value="{{ admin.user.first_name }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" value="{{ admin.user.last_name }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5 class="mb-3 mt-4 border-bottom pb-2">Contact Information</h5>
+                            <div class="mb-3">
+                                <label for="id_phone_number" class="form-label">Phone Number</label>
+                                <input type="text" name="phone_number" id="id_phone_number" class="form-control" value="{{ admin.phone_number }}" required>
+                                {% if form.phone_number.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.phone_number.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_address" class="form-label">Address</label>
+                                <textarea name="address" id="id_address" class="form-control" rows="3">{{ admin.address }}</textarea>
+                                {% if form.address.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.address.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-danger">Update Profile</button>
+                                <a href="{% url 'change_password' %}" class="btn btn-outline-danger">Change Password</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | {{ block.super }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="container-fluid px-0">
+    <div class="position-relative">
+        <img src="{% static 'img/hero-banner.jpg' %}" class="img-fluid w-100" alt="Blood Donation" style="height: 500px; object-fit: cover; filter: brightness(0.7);">
+        <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+            <h1 class="display-4 fw-bold mb-4">Give Blood, Save Lives</h1>
+            <p class="lead mb-4">Your donation can make a difference in someone's life today.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="{% url 'donor_register' %}" class="btn btn-danger btn-lg px-4 me-md-2">Become a Donor</a>
+                <a href="{% url 'blood_request_form' %}" class="btn btn-outline-light btn-lg px-4">Request Blood</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="container py-5">
+    <div class="row text-center mb-5">
+        <div class="col-md-3 mb-4">
+            <div class="bg-danger text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                <i class="fas fa-users fa-3x"></i>
+            </div>
+            <h3 class="fw-bold">{{ total_donors }}</h3>
+            <p class="text-muted">Registered Donors</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="bg-danger text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                <i class="fas fa-tint fa-3x"></i>
+            </div>
+            <h3 class="fw-bold">{{ total_blood_units }}</h3>
+            <p class="text-muted">Blood Units Available</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="bg-danger text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                <i class="fas fa-ambulance fa-3x"></i>
+            </div>
+            <h3 class="fw-bold">{{ total_requests }}</h3>
+            <p class="text-muted">Blood Requests</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="bg-danger text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                <i class="fas fa-heartbeat fa-3x"></i>
+            </div>
+            <h3 class="fw-bold">{{ lives_saved }}</h3>
+            <p class="text-muted">Lives Saved</p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <div class="row mb-4 text-center">
+            <div class="col-md-12">
+                <h2 class="fw-bold">Why Choose Our Blood Bank System?</h2>
+                <p class="text-muted">We provide a comprehensive platform connecting donors with those in need</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-danger text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-search fa-2x"></i>
+                        </div>
+                        <h4 class="card-title mb-3">Find Donors Quickly</h4>
+                        <p class="card-text text-muted">Search for blood donors based on blood group, location, and availability to find help when you need it most.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-danger text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-user-shield fa-2x"></i>
+                        </div>
+                        <h4 class="card-title mb-3">Secure Platform</h4>
+                        <p class="card-text text-muted">Your data is protected with our secure system, ensuring privacy and confidentiality for both donors and recipients.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-danger text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-mobile-alt fa-2x"></i>
+                        </div>
+                        <h4 class="card-title mb-3">Easy to Use</h4>
+                        <p class="card-text text-muted">Our intuitive interface makes it simple to register as a donor, request blood, or search for available donors in your area.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blood Groups Section -->
+<div class="container py-5">
+    <div class="row mb-4 text-center">
+        <div class="col-md-12">
+            <h2 class="fw-bold">Blood Groups & Compatibility</h2>
+            <p class="text-muted">Understanding blood types is essential for safe transfusions</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-danger">
+                        <tr>
+                            <th>Blood Group</th>
+                            <th>Can Donate To</th>
+                            <th>Can Receive From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge bg-danger">A+</span></td>
+                            <td>A+, AB+</td>
+                            <td>A+, A-, O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">A-</span></td>
+                            <td>A+, A-, AB+, AB-</td>
+                            <td>A-, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">B+</span></td>
+                            <td>B+, AB+</td>
+                            <td>B+, B-, O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">B-</span></td>
+                            <td>B+, B-, AB+, AB-</td>
+                            <td>B-, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">AB+</span></td>
+                            <td>AB+ only</td>
+                            <td>All blood types</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">AB-</span></td>
+                            <td>AB+, AB-</td>
+                            <td>A-, B-, AB-, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">O+</span></td>
+                            <td>A+, B+, AB+, O+</td>
+                            <td>O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge bg-danger">O-</span></td>
+                            <td>All blood types</td>
+                            <td>O- only</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-3">Blood Donation Facts</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-danger me-2"></i>
+                            One donation can save up to three lives
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-danger me-2"></i>
+                            Blood cannot be manufactured – it can only come from generous donors
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-danger me-2"></i>
+                            Type O negative is the universal blood type, needed for emergency transfusions
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-danger me-2"></i>
+                            Every two seconds someone needs blood in India
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-danger me-2"></i>
+                            A healthy donor may donate red blood cells every 56 days
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-danger me-2"></i>
+                            The average adult has about 10 pints of blood in their body
+                        </li>
+                    </ul>
+
+                    <div class="d-grid mt-4">
+                        <a href="{% url 'donor_register' %}" class="btn btn-danger">
+                            <i class="fas fa-heart me-2"></i>Become a Donor Today
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="container-fluid bg-danger text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8 text-center text-md-start">
+                <h2 class="fw-bold mb-3">Ready to Make a Difference?</h2>
+                <p class="lead mb-0">Join our community of donors or find the blood you need.</p>
+            </div>
+            <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                <a href="{% url 'register' %}" class="btn btn-light btn-lg me-2">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="container py-5">
+    <div class="row mb-4 text-center">
+        <div class="col-md-12">
+            <h2 class="fw-bold">Success Stories</h2>
+            <p class="text-muted">Read how our platform has helped save lives</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex align-items-center">
+                            <img src="{% static 'img/testimonial1.jpg' %}" alt="Testimonial" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h5 class="mb-0">Ananya Sharma</h5>
+                                <p class="text-muted mb-0">Blood Recipient</p>
+                            </div>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-quote-right fa-2x"></i>
+                        </div>
+                    </div>
+                    <p class="card-text">"During my emergency surgery, I needed rare B- blood. Through this platform, donors were found within hours. I'm forever grateful to those who saved my life."</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex align-items-center">
+                            <img src="{% static 'img/testimonial2.jpg' %}" alt="Testimonial" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h5 class="mb-0">Rajesh Patel</h5>
+                                <p class="text-muted mb-0">Regular Donor</p>
+                            </div>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-quote-right fa-2x"></i>
+                        </div>
+                    </div>
+                    <p class="card-text">"As a regular donor, this system makes it easy to track my donations and find where my blood type is needed. I've donated 15 times through this platform already!"</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex align-items-center">
+                            <img src="{% static 'img/testimonial3.jpg' %}" alt="Testimonial" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h5 class="mb-0">Dr. Meenakshi Iyer</h5>
+                                <p class="text-muted mb-0">Hospital Administrator</p>
+                            </div>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-quote-right fa-2x"></i>
+                        </div>
+                    </div>
+                    <p class="card-text">"Our hospital relies on this blood bank system during emergencies. The quick donor matching and efficient request system has saved countless lives."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

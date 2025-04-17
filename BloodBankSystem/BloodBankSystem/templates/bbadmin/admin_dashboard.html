@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_group_list' %}" class="text-decoration-none">
+                            <i class="fas fa-tint me-2 text-danger"></i>Blood Groups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_donor_list' %}" class="text-decoration-none">
+                            <i class="fas fa-users me-2 text-danger"></i>Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Blood Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact_query_list' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Queries
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_report' %}" class="text-decoration-none">
+                            <i class="fas fa-chart-bar me-2 text-danger"></i>Reports
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'admin_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <div class="card border-danger">
+                            <div class="card-body text-center">
+                                <div class="display-4 text-danger mb-2">{{ total_donors }}</div>
+                                <h5 class="text-muted">Total Donors</h5>
+                            </div>
+                            <div class="card-footer bg-danger text-white text-center">
+                                <a href="{% url 'admin_donor_list' %}" class="text-white text-decoration-none">
+                                    <i class="fas fa-users me-1"></i>View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4">
+                        <div class="card border-success">
+                            <div class="card-body text-center">
+                                <div class="display-4 text-success mb-2">{{ available_donors }}</div>
+                                <h5 class="text-muted">Available Donors</h5>
+                            </div>
+                            <div class="card-footer bg-success text-white text-center">
+                                <a href="{% url 'admin_donor_list' %}?available=true" class="text-white text-decoration-none">
+                                    <i class="fas fa-user-check me-1"></i>View Available
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4">
+                        <div class="card border-warning">
+                            <div class="card-body text-center">
+                                <div class="display-4 text-warning mb-2">{{ total_requests }}</div>
+                                <h5 class="text-muted">Blood Requests</h5>
+                            </div>
+                            <div class="card-footer bg-warning text-white text-center">
+                                <a href="{% url 'admin_blood_request_list' %}" class="text-white text-decoration-none">
+                                    <i class="fas fa-ambulance me-1"></i>View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4">
+                        <div class="card border-info">
+                            <div class="card-body text-center">
+                                <div class="display-4 text-info mb-2">{{ pending_requests }}</div>
+                                <h5 class="text-muted">Pending Requests</h5>
+                            </div>
+                            <div class="card-footer bg-info text-white text-center">
+                                <a href="{% url 'admin_blood_request_list' %}?status=Pending" class="text-white text-decoration-none">
+                                    <i class="fas fa-clock me-1"></i>View Pending
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="fas fa-tint me-2 text-danger"></i>Blood Inventory</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Blood Group</th>
+                                                <th>Available Units</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for group in blood_groups %}
+                                                <tr>
+                                                    <td><span class="badge bg-danger">{{ group.name }}</span></td>
+                                                    <td>{{ group.total_units }}</td>
+                                                    <td>
+                                                        {% if group.total_units > 10 %}
+                                                            <span class="badge bg-success">Sufficient</span>
+                                                        {% elif group.total_units > 5 %}
+                                                            <span class="badge bg-warning">Moderate</span>
+                                                        {% else %}
+                                                            <span class="badge bg-danger">Low</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="{% url 'blood_group_list' %}" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View All Blood Groups
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="fas fa-bell me-2 text-danger"></i>Recent Activities</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    {% for activity in recent_activities %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">{{ activity.title }}</div>
+                                                {{ activity.description }}
+                                            </div>
+                                            <span class="badge bg-secondary rounded-pill">{{ activity.time_ago }}</span>
+                                        </li>
+                                    {% empty %}
+                                        <li class="list-group-item">No recent activities found.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="fas fa-tasks me-2 text-danger"></i>Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'blood_group_add' %}" class="btn btn-outline-danger w-100 py-3">
+                                            <i class="fas fa-tint mb-2 d-block fa-2x"></i>
+                                            Add Blood Group
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'admin_donor_list' %}" class="btn btn-outline-danger w-100 py-3">
+                                            <i class="fas fa-users mb-2 d-block fa-2x"></i>
+                                            Manage Donors
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'admin_blood_request_list' %}?status=Pending" class="btn btn-outline-danger w-100 py-3">
+                                            <i class="fas fa-clipboard-check mb-2 d-block fa-2x"></i>
+                                            Process Requests
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'blood_request_report' %}" class="btn btn-outline-danger w-100 py-3">
+                                            <i class="fas fa-file-alt mb-2 d-block fa-2x"></i>
+                                            Generate Reports
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

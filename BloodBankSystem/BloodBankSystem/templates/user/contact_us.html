@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-envelope me-2"></i>Contact Us</h4>
+            </div>
+            <div class="card-body">
+                <p>
+                    Have questions or need assistance? Feel free to contact us using the form below and we'll get back to you as soon as possible.
+                </p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" name="name" id="name" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" name="email" id="email" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="text" name="phone_number" id="phone_number" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" name="subject" id="subject" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea name="message" id="message" rows="5" class="form-control" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Find Us</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Address:</strong></p>
+                <p>
+                    123 Blood Bank Street<br>
+                    City, State 12345<br>
+                    Country
+                </p>
+                
+                <hr>
+                
+                <p><strong>Email:</strong></p>
+                <p><a href="mailto:info@bloodbank.com">info@bloodbank.com</a></p>
+                
+                <hr>
+                
+                <p><strong>Phone:</strong></p>
+                <p>+1 (555) 123-4567</p>
+            </div>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Hours of Operation</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Monday - Friday:</span>
+                        <span>9:00 AM - 6:00 PM</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Saturday:</span>
+                        <span>10:00 AM - 4:00 PM</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Sunday:</span>
+                        <span>Closed</span>
+                    </li>
+                </ul>
+                
+                <div class="alert alert-info mt-3">
+                    <small>
+                        <i class="fas fa-info-circle me-2"></i>For emergency blood requests outside of our operating hours, please call our emergency hotline: <strong>+1 (555) 987-6543</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

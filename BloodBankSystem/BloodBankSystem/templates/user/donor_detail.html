@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Donor Details | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="fas fa-user me-2"></i>Donor Details</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                {% if donor.profile_pic %}
+                    <img src="{{ donor.profile_pic.url }}" alt="{{ donor.user.get_full_name }}" class="img-fluid rounded-circle mb-3" style="max-width: 200px; max-height: 200px;">
+                {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" alt="Default Profile" class="img-fluid rounded-circle mb-3" style="max-width: 200px; max-height: 200px;" onerror="this.src='https://via.placeholder.com/200?text=User'">
+                {% endif %}
+                
+                <h4>{{ donor.user.get_full_name }}</h4>
+                <p class="badge bg-danger mb-2">Blood Group: {{ donor.blood_group }}</p>
+                
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{% url 'request_blood' %}" class="btn btn-danger">
+                        <i class="fas fa-tint me-2"></i>Request Blood
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th width="30%">Gender</th>
+                            <td>{{ donor.gender }}</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td>{{ donor.age }} years</td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <td>{{ donor.city }}</td>
+                        </tr>
+                        <tr>
+                            <th>State</th>
+                            <td>{{ donor.state }}</td>
+                        </tr>
+                        <tr>
+                            <th>Donor Since</th>
+                            <td>{{ donor.date_joined|date:"F d, Y" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Donation</th>
+                            <td>
+                                {% if donor.last_donation_date %}
+                                    {{ donor.last_donation_date|date:"F d, Y" }}
+                                {% else %}
+                                    <span class="text-muted">No donation record</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Availability</th>
+                            <td>
+                                {% if donor.is_available %}
+                                    <span class="badge bg-success">Available for Donation</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Not Available</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="alert alert-info mt-3">
+                    <p class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        If you need blood from this donor, please submit a blood request. The donor will be notified, and our team will coordinate the donation process.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'donor_list' %}" class="btn btn-outline-danger">
+            <i class="fas fa-arrow-left me-2"></i>Back to Donor List
+        </a>
+    </div>
+</div>
+{% endblock %}

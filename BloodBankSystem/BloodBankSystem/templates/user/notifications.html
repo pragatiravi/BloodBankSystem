@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">My Notifications</h3>
+                    <span class="badge bg-danger">{{ unread_count }} Unread</span>
+                </div>
+                <div class="card-body">
+                    {% if notifications %}
+                        <div class="mb-3">
+                            <a href="?mark_all_read=1" class="btn btn-outline-primary btn-sm">Mark All as Read</a>
+                        </div>
+                        
+                        <div class="list-group" id="notification-list">
+                            {% for notification in notifications %}
+                                <div class="list-group-item list-group-item-action {% if not notification.is_read %}list-group-item-warning{% endif %}">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">
+                                            {% if notification.notification_type == 'blood_request' %}
+                                                <i class="fas fa-tint text-danger"></i> Blood Request
+                                            {% elif notification.notification_type == 'donor_available' %}
+                                                <i class="fas fa-user text-success"></i> Donor Available
+                                            {% elif notification.notification_type == 'request_fulfilled' %}
+                                                <i class="fas fa-check-circle text-success"></i> Request Fulfilled
+                                            {% else %}
+                                                <i class="fas fa-bell"></i> Notification
+                                            {% endif %}
+                                        </h5>
+                                        <small>{{ notification.created_at }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ notification.message }}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <div>
+                                            {% if notification.related_request %}
+                                                <a href="{% url 'blood_request_detail' notification.related_request.id %}" class="btn btn-sm btn-info">
+                                                    View Request
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                        {% if not notification.is_read %}
+                                            <a href="{% url 'mark_notification_read' notification.id %}" class="btn btn-sm btn-outline-secondary">
+                                                Mark as Read
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info" id="notification-list">
+                            You don't have any notifications yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // WebSocket connection for real-time notifications
+    document.addEventListener('DOMContentLoaded', function() {
+        const userId = "{{ request.user.id }}";
+        
+        // Only connect if user is logged in
+        if (userId) {
+            const notificationSocket = new WebSocket(
+                'ws://' + window.location.host + '/ws/notifications/' + userId + '/'
+            );
+            
+            notificationSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                
+                if (data.type === 'new_notification') {
+                    // Show notification
+                    showNotification(data.message, data.notification_type);
+                    
+                    // Refresh the page if we're on the notifications page
+                    if (window.location.pathname === '{% url "notifications" %}') {
+                        window.location.reload();
+                    }
+                }
+            };
+            
+            notificationSocket.onclose = function(e) {
+                console.error('Notification socket closed unexpectedly');
+            };
+        }
+    });
+    
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'toast';
+        notification.setAttribute('role', 'alert');
+        notification.setAttribute('aria-live', 'assertive');
+        notification.setAttribute('aria-atomic', 'true');
+        
+        // Set notification content based on type
+        let icon = 'bell';
+        let bgColor = 'bg-primary';
+        
+        if (type === 'blood_request') {
+            icon = 'tint';
+            bgColor = 'bg-danger';
+        } else if (type === 'donor_available') {
+            icon = 'user';
+            bgColor = 'bg-success';
+        } else if (type === 'request_fulfilled') {
+            icon = 'check-circle';
+            bgColor = 'bg-success';
+        }
+        
+        notification.innerHTML = `
+            <div class="toast-header ${bgColor} text-white">
+                <i class="fas fa-${icon} me-2"></i>
+                <strong class="me-auto">New Notification</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        
+        // Add to notification container
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            container.className = 'position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '1050';
+            document.body.appendChild(container);
+        }
+        
+        container.appendChild(notification);
+        
+        // Initialize and show toast
+        const toast = new bootstrap.Toast(notification);
+        toast.show();
+        
+        // Update notification count in navbar if it exists
+        const notificationBadge = document.getElementById('notification-badge');
+        if (notificationBadge) {
+            const currentCount = parseInt(notificationBadge.textContent);
+            notificationBadge.textContent = currentCount + 1;
+            notificationBadge.style.display = 'inline-block';
+        }
+    }
+</script>
+{% endblock %}

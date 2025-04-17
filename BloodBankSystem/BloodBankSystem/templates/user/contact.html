@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user me-2"></i>User Dashboard</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'user_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_form' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Request Blood
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'user_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-list me-2 text-danger"></i>My Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'search_donors' %}" class="text-decoration-none">
+                            <i class="fas fa-search me-2 text-danger"></i>Search Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Us
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'user_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-envelope me-2"></i>Contact Us</h4>
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="row">
+                    <div class="col-md-5 mb-4">
+                        <div class="card border-danger h-100">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Contact Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-4">
+                                    <div class="bg-danger text-white rounded-circle p-3 me-3">
+                                        <i class="fas fa-map-marker-alt fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Address</h6>
+                                        <p class="mb-0">123 Blood Bank Street, Lifesaver City, 12345</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex align-items-center mb-4">
+                                    <div class="bg-danger text-white rounded-circle p-3 me-3">
+                                        <i class="fas fa-phone fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Phone</h6>
+                                        <p class="mb-0">+1 (123) 456-7890</p>
+                                        <p class="mb-0">+1 (987) 654-3210 (Emergency)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex align-items-center mb-4">
+                                    <div class="bg-danger text-white rounded-circle p-3 me-3">
+                                        <i class="fas fa-envelope fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Email</h6>
+                                        <p class="mb-0">info@bloodbanksystem.com</p>
+                                        <p class="mb-0">support@bloodbanksystem.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-danger text-white rounded-circle p-3 me-3">
+                                        <i class="fas fa-clock fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Working Hours</h6>
+                                        <p class="mb-0">Monday - Friday: 9:00 AM - 5:00 PM</p>
+                                        <p class="mb-0">Saturday: 10:00 AM - 2:00 PM</p>
+                                        <p class="mb-0">Sunday: Closed (Emergency Only)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-7">
+                        <h5 class="mb-3 border-bottom pb-2">Send Us a Message</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_name" class="form-label">Your Name*</label>
+                                <input type="text" name="name" id="id_name" class="form-control" 
+                                       value="{{ form.name.value|default:user.get_full_name }}" required>
+                                {% if form.name.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label">Your Email*</label>
+                                <input type="email" name="email" id="id_email" class="form-control" 
+                                       value="{{ form.email.value|default:user.email }}" required>
+                                {% if form.email.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_phone_number" class="form-label">Phone Number</label>
+                                <input type="text" name="phone_number" id="id_phone_number" class="form-control" 
+                                       value="{{ form.phone_number.value }}">
+                                {% if form.phone_number.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.phone_number.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_subject" class="form-label">Subject*</label>
+                                <input type="text" name="subject" id="id_subject" class="form-control" 
+                                       value="{{ form.subject.value }}" required>
+                                {% if form.subject.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.subject.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_message" class="form-label">Message*</label>
+                                <textarea name="message" id="id_message" rows="5" class="form-control" required>{{ form.message.value }}</textarea>
+                                {% if form.message.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.message.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

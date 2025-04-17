@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Donor List | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="fas fa-users me-2"></i>Available Donors</h4>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <a href="{% url 'search_donor' %}" class="btn btn-outline-danger">
+                <i class="fas fa-search me-2"></i>Advanced Search
+            </a>
+        </div>
+        
+        {% if donors %}
+            <div class="row">
+                {% for donor in donors %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0 text-center">{{ donor.user.get_full_name }}</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                {% if donor.profile_pic %}
+                                    <img src="{{ donor.profile_pic.url }}" alt="{{ donor.user.get_full_name }}" class="img-fluid rounded-circle mb-3" style="max-width: 100px; max-height: 100px;">
+                                {% else %}
+                                    <img src="{% static 'images/default-profile.png' %}" alt="Default Profile" class="img-fluid rounded-circle mb-3" style="max-width: 100px; max-height: 100px;" onerror="this.src='https://via.placeholder.com/100?text=User'">
+                                {% endif %}
+                                
+                                <p class="badge bg-danger mb-2">{{ donor.blood_group }}</p>
+                                <p><i class="fas fa-map-marker-alt me-2"></i>{{ donor.city }}, {{ donor.state }}</p>
+                                
+                                <a href="{% url 'donor_detail' donor.id %}" class="btn btn-sm btn-outline-danger">View Details</a>
+                            </div>
+                            <div class="card-footer text-center text-muted">
+                                <small>Donor since: {{ donor.date_joined|date:"M Y" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p class="mb-0">No donors are currently available. Please check back later or use the search function.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

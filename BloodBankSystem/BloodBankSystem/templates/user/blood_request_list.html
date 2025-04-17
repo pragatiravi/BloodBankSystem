@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Blood Requests | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user me-2"></i>User Dashboard</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{% url 'user_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-tachometer-alt me-2 text-danger"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'blood_request_form' %}" class="text-decoration-none">
+                            <i class="fas fa-ambulance me-2 text-danger"></i>Request Blood
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'user_blood_request_list' %}" class="text-decoration-none">
+                            <i class="fas fa-list me-2 text-danger"></i>My Requests
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'search_donors' %}" class="text-decoration-none">
+                            <i class="fas fa-search me-2 text-danger"></i>Search Donors
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'contact' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-2 text-danger"></i>Contact Us
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'user_profile' %}" class="text-decoration-none">
+                            <i class="fas fa-user-edit me-2 text-danger"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'logout' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-list me-2"></i>My Blood Requests</h4>
+                <a href="{% url 'blood_request_form' %}" class="btn btn-light btn-sm">
+                    <i class="fas fa-plus me-1"></i>New Request
+                </a>
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="mb-4">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                <option value="">All Statuses</option>
+                                <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                <option value="Completed" {% if request.GET.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="blood_group" class="form-select" onchange="this.form.submit()">
+                                <option value="">All Blood Groups</option>
+                                {% for bg in blood_groups %}
+                                    <option value="{{ bg.name }}" {% if request.GET.blood_group == bg.name %}selected{% endif %}>{{ bg.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{% url 'user_blood_request_list' %}" class="btn btn-outline-secondary w-100">
+                                <i class="fas fa-sync-alt me-1"></i>Reset Filters
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                
+                {% if requests %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Patient Name</th>
+                                    <th>Blood Group</th>
+                                    <th>Units</th>
+                                    <th>Hospital</th>
+                                    <th>Request Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in requests %}
+                                    <tr class="{% if request.status == 'Pending' %}table-warning{% endif %}">
+                                        <td>{{ request.patient_name }}</td>
+                                        <td><span class="badge bg-danger">{{ request.blood_group }}</span></td>
+                                        <td>{{ request.units_required }}</td>
+                                        <td>{{ request.hospital_name }}</td>
+                                        <td>{{ request.request_date|date:"d M, Y" }}</td>
+                                        <td>
+                                            {% if request.status == 'Pending' %}
+                                                <span class="badge bg-warning">{{ request.status }}</span>
+                                            {% elif request.status == 'Approved' %}
+                                                <span class="badge bg-success">{{ request.status }}</span>
+                                            {% elif request.status == 'Rejected' %}
+                                                <span class="badge bg-danger">{{ request.status }}</span>
+                                            {% else %}
+                                                <span class="badge bg-info">{{ request.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'user_blood_request_detail' request.id %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if request.status == 'Pending' %}
+                                                <a href="{% url 'user_blood_request_edit' request.id %}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="{% url 'user_blood_request_delete' request.id %}" class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p class="mb-0">You haven't made any blood requests yet. <a href="{% url 'blood_request_form' %}">Make your first request</a>.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

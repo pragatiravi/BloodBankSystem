@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>About Us</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'images/about.jpg' %}" alt="About Us" class="img-fluid rounded mb-3" onerror="this.src='https://via.placeholder.com/600x400?text=Blood+Bank+System'">
+            </div>
+            <div class="col-md-6">
+                <h3>Our Mission</h3>
+                <p>
+                    The Blood Bank System is dedicated to saving lives by ensuring a safe and adequate blood supply for all patients in need. 
+                    We aim to be the bridge between blood donors and patients, providing timely access to safe blood products.
+                </p>
+                <h3>Our Vision</h3>
+                <p>
+                    To be the leading platform connecting donors with recipients, ensuring that no one dies due to lack of blood.
+                    We envision a world where everyone has access to safe blood when needed.
+                </p>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h3>Our Core Values</h3>
+        <div class="row mt-3">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-heart text-danger fa-3x mb-3"></i>
+                        <h5>Compassion</h5>
+                        <p>We are driven by a genuine concern for the well-being of our donors and recipients.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt text-danger fa-3x mb-3"></i>
+                        <h5>Safety</h5>
+                        <p>We maintain the highest standards in collecting, testing, and distributing blood products.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users text-danger fa-3x mb-3"></i>
+                        <h5>Community</h5>
+                        <p>We believe in building a community of donors who are ready to help in times of need.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h3>Our Services</h3>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Blood donation drives</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Blood component separation</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Blood group testing</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Blood storage and preservation</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Emergency blood supply</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Donor management</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Blood request processing</li>
+                    <li class="list-group-item"><i class="fas fa-check-circle text-danger me-2"></i> Blood donation awareness programs</li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h3>Our History</h3>
+        <p>
+            Established in 2023, the Blood Bank System was founded with a vision to create a centralized platform that connects blood donors with those in need. 
+            What started as a small initiative has now grown into a comprehensive blood management system serving thousands of people every year.
+        </p>
+        <p>
+            Over the years, we have built a robust network of donors, healthcare facilities, and volunteers who work together to ensure that blood is available
+            when and where it is needed. Our journey has been one of continuous learning, improvement, and innovation.
+        </p>
+        
+        <hr>
+        
+        <h3>Join Our Mission</h3>
+        <p>
+            We invite you to be a part of our mission to save lives. Whether you're a donor, a volunteer, or someone in need of blood, 
+            we are here to serve you. Together, we can make a difference in the lives of countless individuals who depend on blood donations for their survival.
+        </p>
+        <div class="text-center mt-3">
+            <a href="{% url 'donor_register' %}" class="btn btn-danger me-2">Register as Donor</a>
+            <a href="{% url 'contact_us' %}" class="btn btn-outline-danger">Contact Us</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
